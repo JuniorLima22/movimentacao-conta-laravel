@@ -17,5 +17,6 @@ class DatabaseSeeder extends Seeder
         $this->call(UserSeeder::class);
         $this->call(PessoasSeeder::class);
         $this->call(ContasSeeder::class);
+        $this->call(HistoricosSeeder::class);
     }
 }
