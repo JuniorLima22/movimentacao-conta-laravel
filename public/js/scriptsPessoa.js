@@ -1,6 +1,6 @@
 $(document).ready(function() {
-    $('.cpf').inputmask("999.999.999-99");
-    $('.cep').inputmask("99999-999");
+    $('#cpf').inputmask("999.999.999-99");
+    $('#cep').inputmask("99999-999");
 
     listarPessoa();
 });
@@ -83,6 +83,12 @@ function limpaFormularioCep(){
     $("#numero").val("");
 }
 
+function limpaFormularioPessoa(){
+    $("#nome").val("");
+    $("#cpf").val("");
+    $("#cep").val("");
+}
+
 function listarPessoa() {
     $("div[role='carregando_listar_pessoa']").removeClass('d-none');
     axios.get('/admin/pessoa/listar', {
@@ -146,7 +152,7 @@ function tbodyListarPessoa(response) {
             td_endereco.innerText = `${pessoa.logradouro} ${pessoa.numero}, ${pessoa.bairro}, ${pessoa.municipio}-${pessoa.estado}`;
             td_acoes.innerHTML = `
                 <nobr>
-                    <button class="btn btn-xs btn-default text-primary mx-1 shadow" title="Editar">
+                    <button class="btn btn-xs btn-default text-primary mx-1 shadow edit" title="Editar" data-id="${pessoa.id}">
                         <i class="fa fa-lg fa-fw fa-pen"></i>
                     </button>
                     
@@ -165,3 +171,62 @@ $(document).on('click', '.delete', function(){
     $('#modal_nome_pessoa').text(nome);
     $('#pessoa_id').val(id);
 });
+
+$(document).on('click', '.edit', function(){
+    let id = $(this).data('id');
+
+    axios.get('/admin/pessoa/editar/'+id)
+    .then(response => {
+        if (response.data.status) {
+            return popularFormularioPessoa(response.data.data);
+        } else {
+            $(document).Toasts('create', {
+                title: response.data.error.title,
+                body: response.data.error.message,
+                class: response.data.error.type,
+                autohide: true,
+                delay: 5000
+            });
+        }
+    })
+    .catch(error => {
+        console.log(error);
+        $(document).Toasts('create', {
+            title: error.name,
+            body: `${error.message} <br> Exception: ${error.response.data.message} <br> File: ${error.response.data.file} <br> Line: ${error.response.data.line} <br> Message: ${error.response.data.message}`,
+            class: 'bg-danger',
+            autohide: true,
+            delay: 8000
+        });
+    });
+});
+
+function popularFormularioPessoa(response){
+    limpaFormularioPessoa();
+    limpaFormularioCep();
+
+    for (const campo in response) {
+        $('#'+campo).val("");
+        $('#'+campo).val(response[campo]);
+    }
+
+    $('#btn_cadastrar_atualizar').html('<i class="fas fa-save"></i> Atualizar');
+    $("#form_cadastrar_atualizar input[name='_method']").remove();
+    $('#form_cadastrar_atualizar').prepend('<input type="hidden" name="_method" value="PUT"></input>');
+
+    let form = $('#form_cadastrar_atualizar').attr('action');
+
+    if (form.indexOf('cadastrar') !== -1) {
+        let newAction = form.slice(0, form.indexOf('cadastrar'))+"atualizar/"+response.id;
+        $('#form_cadastrar_atualizar').attr('action', newAction);
+    }
+
+    if (form.indexOf('atualizar') !== -1) {
+        let newAction = form.slice(0, form.indexOf('atualizar'))+"atualizar/"+response.id;
+        $('#form_cadastrar_atualizar').attr('action', newAction);
+    }
+    
+    $('html, body').animate({
+        scrollTop: 100
+    }, 800);
+}

@@ -7,28 +7,27 @@
 @stop
 
 @section('content')
-    <x-adminlte-card class="shadow">
+    <x-adminlte-card id="card_pessoa" class="shadow">
         @if (session('message'))
             <x-adminlte-alert theme="{{ session('type') }}" icon="" dismissable>
                 {{ session('message') }}
             </x-adminlte-alert>
         @endif
 
-        <form action="{{ route('admin.pessoa.cadastrar') }}" method="POST">
+        <form action="{{ route('admin.pessoa.cadastrar') }}" id="form_cadastrar_atualizar" method="POST">
             @csrf
-
             <div class="row">
                 <div class="col-sm-6">
                     <x-adminlte-input type="text" name="nome" id="nome" label="Nome" placeholder="Nome da Pessoa" enable-old-support></x-adminlte-input>
                 </div>
                 <div class="col-sm-6">
-                    <x-adminlte-input type="text" name="cpf" id="cpf" class="cpf" label="CPF" placeholder="123.456.789-00" enable-old-support></x-adminlte-input>
+                    <x-adminlte-input type="text" name="cpf" id="cpf" label="CPF" placeholder="123.456.789-00" enable-old-support></x-adminlte-input>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-sm-4">
-                    <x-adminlte-input type="text" name="cep" id="cep" class="cep" label="CEP" placeholder="CEP" enable-old-support>
+                    <x-adminlte-input type="text" name="cep" id="cep" label="CEP" placeholder="CEP" enable-old-support>
                         <x-slot name="bottomSlot">
                             <span class="text-sm text-gray">
                                 Digite apenas números
@@ -63,7 +62,7 @@
             <x-adminlte-options :options="$permissoes" placeholder="Selecione nível do usuário"/>
         </x-adminlte-select> --}}
 
-            <x-adminlte-button label="Cadastrar" type="submit" theme="success" icon="fas fa-save" class="mr-1" />
+            <x-adminlte-button label="Cadastrar" id="btn_cadastrar_atualizar" type="submit" theme="success" icon="fas fa-save" class="mr-1" />
             <x-adminlte-button label="Cancelar" icon="fas fa-ban" onclick="location.href=''" />
         </form>
     </x-adminlte-card>

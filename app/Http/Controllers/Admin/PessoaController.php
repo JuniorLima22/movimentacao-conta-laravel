@@ -130,7 +130,26 @@ class PessoaController extends Controller
      */
     public function edit($id)
     {
-        //
+        try {
+
+            $pessoa = $this->pessoa->find($id);
+
+            $res = [
+                'status' => true,
+                'data' => $pessoa,
+            ];
+            return response()->json($res);
+        } catch (Exception $e) {
+            $response = [
+                'status' => false,
+                'error' => [
+                    'title' => 'Erro!',
+                    'message' => 'Erro ao listar pessoa. Código de erro: ' . $e->getMessage(),
+                    'type' => 'bg-danger',
+                ]
+            ];
+            return response()->json($response);
+        }
     }
 
     /**
@@ -140,9 +159,54 @@ class PessoaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(RequestPessoa $request, $id)
     {
-        //
+        try {
+            DB::BeginTransaction();
+
+            $cpf = preg_replace('/[^0-9]/', '', $request->input('cpf'));
+            $cep = preg_replace('/[^0-9]/', '', $request->input('cep'));
+            
+            $pessoa = $this->pessoa->where('id', $id)->update([
+                'nome' => $request->input('nome'),
+                'cpf' => $cpf,
+                'cep' => $cep,
+                'numero' => $request->input('numero'),
+                'logradouro' => $request->input('logradouro'),
+                'bairro' => $request->input('bairro'),
+                'estado' => $request->input('estado'),
+                'municipio' => $request->input('municipio')
+            ]);
+
+            if ($pessoa) {
+
+                DB::commit();
+                
+                $notification = [
+                    'title' => 'Cucesso',
+                    'messageSystem' => 'Registro atualizado com sucesso.',
+                    'type' => 'bg-success',
+                ];
+                return back()->with($notification);
+            }
+
+            $notification = [
+                'title' => 'Erro',
+                'messageSystem' => 'Erro ao atualizar pessoa',
+                'type' => 'bg-danger',
+            ];
+            return back()->with($notification);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            $notification = [
+                'title' => 'Erro do Sistema',
+                'messageSystem' => 'Erro ao atualizar pessoa. Código de erro: '. $e->getMessage(),
+                'type' => 'bg-danger',
+            ];
+            return back()->with($notification);
+        }
     }
 
     /**
