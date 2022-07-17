@@ -1,23 +1,8 @@
 $(document).ready(function() {
     $('.cpf').inputmask("999.999.999-99");
     $('.cep').inputmask("99999-999");
-    // contarUsuarioRegistrado();
-    // contarClienteRegistrado();
-    // numeroDaConta();
-    // saldoDaConta();
-    // limitePaginacao();
 
     listarPessoa();
-
-    // $('#mostar_ocultar_saldo').css('cursor', 'pointer');
-    // $('#mostar_ocultar_saldo').on('click', function() {
-    //     if ($(this).hasClass('fa-eye-slash')) {
-    //         saldoDaConta();
-    //     } else {
-    //         $('#saldo_conta').html('R$ ****');
-    //     }
-    //     $(this).toggleClass('fa-eye fa-eye-slash');
-    // });
 });
 
 $(document).on('keyup', '#nome', function(){
@@ -27,13 +12,6 @@ $(document).on('keyup', '#nome', function(){
         palavras[a] = w[0].toUpperCase() + w.slice(1);
     }
     $(this).val(palavras.join(" "));
-});
-
-$(document).on('click', '.delete', function(event){
-    event.preventDefault();
-    let id = $(this).data('id');
-    let nome = $(this).data('nome');
-    $('#modal_nome_pessoa').text(nome);
 });
 
 $(document).on('keyup', '#cep', function(){
@@ -104,119 +82,6 @@ function limpaFormularioCep(){
     $("#logradouro").val("");
     $("#numero").val("");
 }
-
-// $(document).on('change', '#limite_paginacao', limitePaginacao);
-
-// function limitePaginacao(){
-//     let limitePaginacao = $('#limite_paginacao').val();
-//     extratoDaConta(limitePaginacao);
-// }
-
-// function contarUsuarioRegistrado() {
-//     axios.get('/contar-usuario-registrado')
-//         .then(response => {
-//             if (response.data.status) {
-//                 let iBox = new _AdminLTE_InfoBox('usuarios_registrados');
-//                 iBox.update({
-//                     text: response.data.contarUsuarios
-//                 });
-//             } else {
-//                 $(document).Toasts('create', {
-//                     title: response.data.error.title,
-//                     body: response.data.error.message,
-//                     class: response.data.error.type
-//                 });
-//             }
-//         })
-//         .catch(error => {
-//             console.log(error);
-//             $(document).Toasts('create', {
-//                 title: error.name,
-//                 body: `${error.message} <br> Exception: ${error.response.data.message} <br> File: ${error.response.data.file} <br> Line: ${error.response.data.line} <br> Message: ${error.response.data.message}`,
-//                 class: 'bg-danger'
-//             });
-//         });
-// }
-
-// function contarClienteRegistrado() {
-//     axios.get('/contar-cliente-registrado')
-//         .then(response => {
-//             if (response.data.status) {
-//                 let iBox = new _AdminLTE_InfoBox('clientes_registrados');
-//                 iBox.update({
-//                     text: response.data.contarClientes
-//                 });
-//             } else {
-//                 $(document).Toasts('create', {
-//                     title: response.data.error.title,
-//                     body: response.data.error.message,
-//                     class: response.data.error.type
-//                 });
-//             }
-//         })
-//         .catch(error => {
-//             console.log(error);
-//             $(document).Toasts('create', {
-//                 title: error.name,
-//                 body: `${error.message} <br> Exception: ${error.response.data.message} <br> File: ${error.response.data.file} <br> Line: ${error.response.data.line} <br> Message: ${error.response.data.message}`,
-//                 class: 'bg-danger'
-//             });
-//         });
-// }
-
-// function numeroDaConta() {
-//     axios.get('/financeiro/numero-conta')
-//         .then(response => {
-//             if (response.data.status) {
-//                 $('#agencia').html(response.data.agency);
-//                 $('#conta_digito').html(response.data.account + '-' + response.data.accountDigit);
-//             } else {
-//                 $(document).Toasts('create', {
-//                     title: response.data.error.title,
-//                     body: response.data.error.message,
-//                     class: response.data.error.type
-//                 });
-//             }
-//         })
-//         .catch(error => {
-//             console.log(error);
-//             $(document).Toasts('create', {
-//                 title: error.name,
-//                 body: `${error.message} <br> Exception: ${error.response.data.message} <br> File: ${error.response.data.file} <br> Line: ${error.response.data.line} <br> Message: ${error.response.data.message}`,
-//                 class: 'bg-danger'
-//             });
-//         })
-//         .finally(() => {
-//             $("div[role='carregando_numero_conta']").addClass('d-none');
-//         });
-// }
-
-// function saldoDaConta() {
-//     $("div[role='carregando_saldo_conta']").removeClass('d-none');
-//     axios.get('/financeiro/saldo-conta')
-//         .then(response => {
-//             if (response.data.status) {
-//                 $('#saldo_conta').html('R$ ' + response.data.balance);
-//             } else {
-//                 $(document).Toasts('create', {
-//                     title: response.data.error.title,
-//                     body: response.data.error.message,
-//                     class: response.data.error.type
-//                 });
-//             }
-//         })
-//         .catch(error => {
-//             console.log(error);
-//             $(document).Toasts('create', {
-//                 title: error.name,
-//                 body: `${error.message} <br> Exception: ${error.response.data.message} <br> File: ${error.response.data.file} <br> Line: ${error.response.data.line} <br> Message: ${error.response.data.message}`,
-//                 class: 'bg-danger'
-//             });
-//         })
-//         .finally(() => {
-//             $("div[role='carregando_saldo_conta']").addClass('d-none');
-//         });
-// }
 
 function listarPessoa() {
     $("div[role='carregando_listar_pessoa']").removeClass('d-none');
@@ -293,3 +158,10 @@ function tbodyListarPessoa(response) {
         }
     }
 }
+
+$(document).on('click', '.delete', function(){
+    let id = $(this).data('id');
+    let nome = $(this).data('nome');
+    $('#modal_nome_pessoa').text(nome);
+    $('#pessoa_id').val(id);
+});

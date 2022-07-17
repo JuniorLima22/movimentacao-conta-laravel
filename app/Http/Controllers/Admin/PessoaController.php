@@ -148,11 +148,44 @@ class PessoaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        try {
+            DB::BeginTransaction();
+
+            $pessoa = $this->pessoa->where('id', $request->id)->delete();
+
+            if ($pessoa) {
+
+                DB::commit();
+                
+                $notification = [
+                    'title' => 'Sucesso',
+                    'messageSystem' => 'Registro deletado com sucesso.',
+                    'type' => 'bg-success',
+                ];
+                return back()->with($notification);
+            }
+
+            $notification = [
+                'title' => 'Sucesso',
+                'messageSystem' => 'Erro ao deletar pessoa',
+                'type' => 'bg-danger',
+            ];
+            return back()->with($notification);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            $notification = [
+                'title' => 'Erro do Sistema',
+                'messageSystem' => 'Erro ao deletar pessoa. Código de erro: '. $e->getMessage(),
+                'type' => 'bg-danger',
+            ];
+            return back()->with($notification);
+        }
     }
 }

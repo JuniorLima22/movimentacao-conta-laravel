@@ -110,9 +110,10 @@
             dados. <br> Deseja realmente executar esta ação?</p>
         <x-slot name="footerSlot">
             <div class="justify-content-end">
-                <form action="" method="POST">
+                <form action="{{ route('admin.pessoa.deletar') }}" method="POST" id="form_delete">
                     @csrf
                     @method('DELETE')
+                    <input type="hidden" name="id" id="pessoa_id" value="">
                     <x-adminlte-button theme="danger" label="Cancelar" data-dismiss="modal" />
                     <x-adminlte-button type="submit" theme="outline-success" label="Deletar" class="ml-2" />
                 </form>

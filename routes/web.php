@@ -28,5 +28,6 @@ Route::prefix('admin')->name('admin.')->group(function(){
         Route::get('/', 'index')->name('index');
         Route::get('/listar', 'listarPessoa')->name('listar');
         Route::post('/cadastrar', 'store')->name('cadastrar');
+        Route::delete('/deletar', 'destroy')->name('deletar');
     });
 });
