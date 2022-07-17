@@ -347,6 +347,26 @@ return [
                 ],
             ],
         ],
+        'axios' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => '/js/axios/axios.min.js',
+                ],
+            ],
+        ],
+        'InputMask' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => '/vendor/inputmask/jquery.inputmask.min.js',
+                ],
+            ],
+        ],
     ],
 
     /*
