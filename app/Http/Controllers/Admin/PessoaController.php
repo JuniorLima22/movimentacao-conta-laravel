@@ -183,7 +183,7 @@ class PessoaController extends Controller
                 DB::commit();
                 
                 $notification = [
-                    'title' => 'Cucesso',
+                    'title' => 'Sucesso',
                     'messageSystem' => 'Registro atualizado com sucesso.',
                     'type' => 'bg-success',
                 ];
