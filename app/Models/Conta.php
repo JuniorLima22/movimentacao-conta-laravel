@@ -10,4 +10,9 @@ class Conta extends Model
     use HasFactory;
 
     protected $fillable = ['pessoa_id', 'numero'];
+
+    public function pessoa()
+    {
+        return $this->belongsTo('App\Models\Pessoa');
+    }
 }
