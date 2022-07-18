@@ -21,7 +21,7 @@ Route::redirect('/', 'home');
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::redirect('/home', 'admin/pessoa/');
 
 Route::middleware('auth')->prefix('admin')->name('admin.')->group(function(){
     Route::controller(PessoaController::class)->prefix('pessoa')->name('pessoa.')->group(function () {
