@@ -66,7 +66,10 @@ class ContaController extends Controller
             $contas = $this->conta->where('pessoa_id', $id)->get();
 
             foreach ($contas as $obj) {
-                $obj->saldo = $this->historico->where('conta_id', $obj->id)->where('tipo', 'E')->sum('valor');
+                $entrada = $this->historico->where('conta_id', $id)->where('tipo', 'E')->sum('valor');
+                $saida = $this->historico->where('conta_id', $id)->where('tipo', 'S')->sum('valor');
+                $saldo = $entrada - $saida;
+                $obj->saldo = $saldo;
             }
 
             $res = [

@@ -43,7 +43,9 @@ class HistoricoController extends Controller
     {
         try {
             $historicos = $this->historico->where('conta_id', $id)->get();
-            $saldo = $this->historico->where('conta_id', $id)->where('tipo', 'E')->sum('valor');
+            $entrada = $this->historico->where('conta_id', $id)->where('tipo', 'E')->sum('valor');
+            $saida = $this->historico->where('conta_id', $id)->where('tipo', 'S')->sum('valor');
+            $saldo = $entrada - $saida;
 
             $res = [
                 'status' => true,
