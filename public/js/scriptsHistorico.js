@@ -12,6 +12,7 @@ $(document).on('change', '#pessoa_id', function(){
     listarContaPessoa(id);
     $('#tbody_listar_historico').empty();
     $('#saldo').empty();
+    $('#tipo').val('').prop('disabled', false);
 });
 
 function listarContaPessoa(id) {
@@ -65,11 +66,9 @@ function listarHistorico() {
     let dataSaldo = $("#conta_id option:selected").data('saldo');
     
     if(!dataSaldo){
-        $('#valor').prop('disabled', true);
-        $('#tipo').prop('disabled', true);
+        $('#tipo').val('E').prop('disabled', true);
     }else{
-        $('#valor').prop('disabled', false);
-        $('#tipo').prop('disabled', false);
+        $('#tipo').val('').prop('disabled', false);
     }
 
     $("div[role='carregando_listar_historico']").removeClass('d-none');
