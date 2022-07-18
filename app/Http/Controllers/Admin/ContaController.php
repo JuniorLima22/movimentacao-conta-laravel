@@ -126,7 +126,26 @@ class ContaController extends Controller
      */
     public function edit($id)
     {
-        //
+        try {
+
+            $conta = $this->conta->find($id);
+
+            $res = [
+                'status' => true,
+                'data' => $conta,
+            ];
+            return response()->json($res);
+        } catch (Exception $e) {
+            $response = [
+                'status' => false,
+                'error' => [
+                    'title' => 'Erro!',
+                    'message' => 'Erro ao listar conta. Código de erro: ' . $e->getMessage(),
+                    'type' => 'bg-danger',
+                ]
+            ];
+            return response()->json($response);
+        }
     }
 
     /**
@@ -136,9 +155,45 @@ class ContaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(RequestConta $request, $id)
     {
-        //
+        try {
+            DB::BeginTransaction();
+
+            $conta = $this->conta->where('id', $id)->update([
+                'pessoa_id' => $request->input('pessoa_id'),
+                'numero' => $request->input('numero'),
+            ]);
+
+            if ($conta) {
+
+                DB::commit();
+                
+                $notification = [
+                    'title' => 'Sucesso',
+                    'messageSystem' => 'Registro atualizado com sucesso.',
+                    'type' => 'bg-success',
+                ];
+                return back()->with($notification);
+            }
+
+            $notification = [
+                'title' => 'Erro',
+                'messageSystem' => 'Erro ao atualizar conta',
+                'type' => 'bg-danger',
+            ];
+            return back()->with($notification);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            $notification = [
+                'title' => 'Erro do Sistema',
+                'messageSystem' => 'Erro ao atualizar conta. Código de erro: '. $e->getMessage(),
+                'type' => 'bg-danger',
+            ];
+            return back()->with($notification);
+        }
     }
 
     /**
