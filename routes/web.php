@@ -17,15 +17,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::redirect('/', 'home');
 
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::prefix('admin')->name('admin.')->group(function(){
+Route::middleware('auth')->prefix('admin')->name('admin.')->group(function(){
     Route::controller(PessoaController::class)->prefix('pessoa')->name('pessoa.')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/listar', 'listarPessoa')->name('listar');
