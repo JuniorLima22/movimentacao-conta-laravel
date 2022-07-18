@@ -26,7 +26,7 @@ class RequestPessoa extends FormRequest
     {
         $id = $this->id;
         $rules = [
-            'nome' => ['required', "unique:pessoas,id,{$id}", 'min:3', 'max:200', 'regex:/^([A-zÀ-ú]|-|_|\s)+$/'],
+            'nome' => ['required', "unique:pessoas,nome,{$id}", 'min:3', 'max:200', 'regex:/^([A-zÀ-ú]|-|_|\s)+$/'],
             'cpf' => ['required', 'cpf'],
             'cep' => ['required', 'formato_cep'],
             'numero' => ['string', 'nullable'],

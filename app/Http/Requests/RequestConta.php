@@ -26,7 +26,7 @@ class RequestConta extends FormRequest
         $id = $this->id;
         $rules = [
             'pessoa_id' => ['required'],
-            'numero' => ['required', 'numeric', 'min:3', "unique:contas,id,{$id}"],
+            'numero' => ['required', 'numeric', 'min:3', "unique:contas,numero,{$id}"],
         ];
         return $rules;
     }
