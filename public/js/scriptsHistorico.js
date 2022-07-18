@@ -66,9 +66,9 @@ function listarHistorico() {
     let dataSaldo = $("#conta_id option:selected").data('saldo');
     
     if(!dataSaldo){
-        $('#tipo').val('E').prop('disabled', true);
+        $('#tipo').val('E').prop('selected', true);
     }else{
-        $('#tipo').val('').prop('disabled', false);
+        $('#tipo').val('').prop('selected', false);
     }
 
     $("div[role='carregando_listar_historico']").removeClass('d-none');
