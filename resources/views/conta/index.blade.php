@@ -67,11 +67,11 @@
 
     <x-adminlte-modal id="modal_delete" title="Exclusão de Registro" theme="danger" icon="fas fa-trash"
         static-backdrop>
-        <p class="text-center">O registro <strong><span id="modal_nome"></span></strong> será deletado da base de
+        <p class="text-center">Conta de numero <strong><span id="modal_nome"></span></strong> será deletado da base de
             dados. <br> Deseja realmente executar esta ação?</p>
         <x-slot name="footerSlot">
             <div class="justify-content-end">
-                <form action="{{ route('admin.pessoa.deletar') }}" method="POST" id="form_delete">
+                <form action="{{ route('admin.conta.deletar') }}" method="POST" id="form_delete">
                     @csrf
                     @method('DELETE')
                     <input type="hidden" name="id" id="conta_id" value="">

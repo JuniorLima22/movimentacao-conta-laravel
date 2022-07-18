@@ -199,11 +199,44 @@ class ContaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        try {
+            DB::BeginTransaction();
+
+            $conta = $this->conta->where('id', $request->id)->delete();
+
+            if ($conta) {
+
+                DB::commit();
+                
+                $notification = [
+                    'title' => 'Sucesso',
+                    'messageSystem' => 'Registro deletado com sucesso.',
+                    'type' => 'bg-success',
+                ];
+                return back()->with($notification);
+            }
+
+            $notification = [
+                'title' => 'Sucesso',
+                'messageSystem' => 'Erro ao deletar conta',
+                'type' => 'bg-danger',
+            ];
+            return back()->with($notification);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            $notification = [
+                'title' => 'Erro do Sistema',
+                'messageSystem' => 'Erro ao deletar conta. Código de erro: '. $e->getMessage(),
+                'type' => 'bg-danger',
+            ];
+            return back()->with($notification);
+        }
     }
 }

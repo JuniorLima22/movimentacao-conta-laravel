@@ -40,6 +40,6 @@ Route::prefix('admin')->name('admin.')->group(function(){
         Route::post('/cadastrar', 'store')->name('cadastrar');
         Route::get('/editar/{id}', 'edit')->name('editar');
         Route::put('/atualizar/{id}', 'update')->name('atualizar');
-        // Route::delete('/deletar', 'destroy')->name('deletar');
+        Route::delete('/deletar', 'destroy')->name('deletar');
     });
 });
