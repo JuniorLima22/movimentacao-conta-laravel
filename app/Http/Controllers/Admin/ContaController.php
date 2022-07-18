@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RequestConta;
 use App\Models\Conta;
+use App\Models\Historico;
 use App\Models\Pessoa;
 use Exception;
 use Illuminate\Http\Request;
@@ -15,11 +16,13 @@ class ContaController extends Controller
 
     protected $conta;
     protected $pessoa;
+    protected $historico;
 
-    public function __construct(Conta $conta, Pessoa $pessoa)
+    public function __construct(Conta $conta, Pessoa $pessoa, Historico $historico)
     {
         $this->conta = $conta;
         $this->pessoa = $pessoa;
+        $this->historico = $historico;
     }
     
     /**
@@ -50,6 +53,33 @@ class ContaController extends Controller
                 'error' => [
                     'title' => 'Erro!',
                     'message' => 'Erro ao listar contas. Código de erro: ' . $e->getMessage(),
+                    'type' => 'bg-danger',
+                ]
+            ];
+            return response()->json($response);
+        }
+    }
+
+    public function listarContaPessoa($id)
+    {
+        try {
+            $contas = $this->conta->where('pessoa_id', $id)->get();
+
+            foreach ($contas as $obj) {
+                $obj->saldo = $this->historico->where('conta_id', $obj->id)->where('tipo', 'E')->sum('valor');
+            }
+
+            $res = [
+                'status' => true,
+                'data' => $contas,
+            ];
+            return response()->json($res);
+        } catch (Exception $e) {
+            $response = [
+                'status' => false,
+                'error' => [
+                    'title' => 'Erro!',
+                    'message' => 'Erro ao listar contas de pessoa. Código de erro: ' . $e->getMessage(),
                     'type' => 'bg-danger',
                 ]
             ];

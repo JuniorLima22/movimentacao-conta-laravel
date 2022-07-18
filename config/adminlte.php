@@ -237,7 +237,7 @@ return [
         ],
         [
             'text'    => 'Movimentação',
-            'url'  => 'admin/movimentacao',
+            'url'  => 'admin/historico',
             'icon'    => 'fas fa-chart-bar',
         ],
     ],
